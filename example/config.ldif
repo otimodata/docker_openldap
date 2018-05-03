@@ -1,0 +1,61 @@
+# example config file - global configuration entry
+dn: cn=config
+objectClass: olcGlobal
+cn: config
+olcArgsFile: /run/openldap/slapd.args
+olcLogLevel: none
+olcPidFile: /run/openldap/slapd.pid
+olcToolThreads: 1
+olcTLSCACertificateFile: /srv/openldap/certs/rootCA.crt
+olcTLSCertificateFile: /srv/openldap/certs/ldap_server.crt
+olcTLSCertificateKeyFile: /srv/openldap/certs/ldap_server.key
+
+# internal schema
+dn: cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: schema
+
+# include the core schema
+include: file:///etc/openldap/schema/core.ldif
+include: file:///etc/openldap/schema/cosine.ldif
+include: file:///etc/openldap/schema/inetorgperson.ldif
+
+# global database parameters
+dn: olcDatabase=frontend,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: frontend
+olcAccess: to *
+  by * read
+
+# set a rootpw for the config database so we can bind.
+# deny access to everyone else.
+dn: olcDatabase=config,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: config
+olcRootDN: cn=manager,cn=config
+olcRootPW: {SSHA}U9AMcmna+7f7RfZ9XV1Y6Q/6CRNRN20w
+olcAccess: to *
+  by self manage
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by * none
+
+dn: olcDatabase=mdb,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcMdbConfig
+olcDatabase: mdb
+olcDbDirectory: /srv/openldap/data
+olcSuffix: dc=example,dc=com
+olcAccess: to attrs=userPassword
+  by self write
+  by anonymous auth
+  by dn="cn=admin,dc=example,dc=com" write
+  by * none
+olcAccess: to *
+  by self write
+  by dn="cn=admin,dc=example,dc=com" write
+  by * read
+olcLastMod: TRUE
+olcRootDN: cn=admin,dc=example,dc=com
+olcRootPW: {SSHA}BmwsPpI97mJniWOseyhBc/Q31iM0Z0p5
+olcDbIndex: objectClass eq
+olcDbIndex: uid eq

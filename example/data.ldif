@@ -1,0 +1,38 @@
+dn: dc=example,dc=com
+dc: example
+o: example.com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+
+dn: ou=groups,dc=example,dc=com
+ou: groups
+objectClass: top
+objectClass: organizationalUnit
+
+dn: ou=persons,dc=example,dc=com
+ou: persons
+objectClass: top
+objectClass: organizationalUnit
+
+dn: uid=john,ou=persons,dc=example,dc=com
+uid: john
+cn: John Smith
+givenName: John
+sn: Smith
+mail: john.smith@example.com
+userPassword: {SSHA}9qRN4xHhtCkfypAfSYy6Y2NKkTVBSjRD
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+
+dn: uid=jane,ou=persons,dc=example,dc=com
+uid: jane
+cn: Jane Smith
+givenName: Jane
+sn: Smith
+mail: jane.smith@example.com
+userPassword: {SSHA}1BEAUpfQxmdOotmiQou925yuJWVvRzY1
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
